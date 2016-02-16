@@ -182,7 +182,7 @@ class Magazine
     protected function trace($message, $args = array()) {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
             /** @noinspection HtmlUnknownTag */
-            $this->output->writeln("<fg=cyan>".sprintf($message, $args).'< />');
+            $this->output->writeln("<fg=cyan>".sprintf($message, $args));
         }
     }
 
@@ -195,7 +195,7 @@ class Magazine
     protected function debug($message, $args = array()) {
     if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
         /** @noinspection HtmlUnknownTag */
-        $this->output->writeln('<fg=green>'.sprintf($message, $args).'< />');
+        $this->output->writeln('<fg=green>'.sprintf($message, $args));
         }
     }
 
@@ -207,6 +207,6 @@ class Magazine
      */
     protected function info($message, $args = array()) {
         /** @noinspection HtmlUnknownTag */
-        $this->output->writeln('<fg=white>'.sprintf($message, $args).'< />');
+        $this->output->writeln('<fg=white>'.sprintf($message, $args));
     }
 }
