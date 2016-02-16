@@ -36,6 +36,69 @@ You can also download the Magazine source and run the `magazine` command directl
     cd magazine
     php bin/magazine -h
 
+Usage
+-----
+
+```json
+{
+  "name": "Foobar",
+  "version": {
+    "release": "1.0.4"
+  },
+  "stability": {
+    "release": "beta"
+  },
+  "license": {
+    "_content": "OSL",
+    "attribs": {
+      "uri": "http://opensource.org/licenses/osl-3.0.php"
+    }
+  },
+  "channel": "community",
+  "summary": "Foobar for Magento",
+  "description": "Foobar for Magento",
+  "notes": "Foobar for Magento",
+  "authors": {
+    "author": {
+      "name": "John Doe",
+      "user": "j.doe",
+      "email": "john.doe@example.com"
+    }
+  },
+  "date": "2015-01-22",
+  "time": "21:13:05",
+  "dependencies": {
+    "required": {
+      "php": {
+        "min": "5.2.0",
+        "max": "7.0.0"
+      }
+    }
+  },
+  "include": {
+    "magelocal": [] ,
+    "magecommunity": [
+      "app/code/community/Foo/Bar/*"
+    ],
+    "magecore": [],
+    "magedesign": [],
+    "mageetc": [],
+    "magelib": [],
+    "magelocale": [],
+    "magemedia": [],
+    "mageskin": [],
+    "mageweb": [],
+    "magetest": [],
+    "mage": []
+  },
+  "exclude": [
+    "vendor",
+    "*.json",
+    "*.lock",
+    "*.tar"
+  ]
+}```
+
 Authors
 -------
 
