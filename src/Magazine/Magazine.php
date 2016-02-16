@@ -20,6 +20,7 @@ class Magazine
      */
     public function __construct($path, OutputInterface $output)
     {
+
         $this->output = $output;
         if (!file_exists(realpath($path)) && !is_file(realpath($path))) {
             throw new \Exception("Missing file or was a directory");
@@ -89,7 +90,8 @@ class Magazine
             $xml->preserveWhiteSpace = FALSE;
             $xml->loadXML($package->getPackageXml());
             $xml->formatOutput = TRUE;
-            $this->debug($xml->saveXml());
+            $this->trace(PHP_EOL);
+            $this->trace($xml->saveXml());
         }
 
         $tgz = $json['name']."-".$json['version']['release'].'.tgz';
@@ -134,19 +136,19 @@ class Magazine
     }
 
     /**
-     * Recursively globs all the files and directories using the given pattern.
-     * If any file or directory exists in the list of excluded items, it is
-     * skipped
-     *
-     * @param $pattern string the glob pattern for selecting files and directories
-     * @param array $excludes the array of files and directories to exclude
-     * @return array the array of files and directories matching the glob pattern
-     */
+ * Recursively globs all the files and directories using the given pattern.
+ * If any file or directory exists in the list of excluded items, it is
+ * skipped
+ *
+ * @param $pattern string the glob pattern for selecting files and directories
+ * @param array $excludes the array of files and directories to exclude
+ * @return array the array of files and directories matching the glob pattern
+ */
     protected function rglob($pattern, $excludes = array()) {
         $files = array();
         foreach (glob($pattern, 0) as $item) {
             if (!empty($excludes) && in_array(ltrim($item, '\.\/'), $excludes)) {
-                $this->debug("Skipping excluded item ./%s", ltrim($item, '\.\/'));
+                $this->trace("Skipping excluded item ./%s", ltrim($item, '\.\/'));
                 continue;
             }
             if (is_dir($item)) {
@@ -160,6 +162,18 @@ class Magazine
     }
 
     /**
+     * Prints a debug log message to the console with the trace message colour
+     *
+     * @param $message string the log message
+     * @param array $args the array of format parameters
+     */
+    protected function trace($message, $args = array()) {
+        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+            $this->output->writeln('<fg=cyan>'.sprintf($message, $args).'</>');
+        }
+    }
+
+    /**
      * Prints a debug log message to the console with the debug message colour
      *
      * @param $message string the log message
@@ -167,7 +181,7 @@ class Magazine
      */
     protected function debug($message, $args = array()) {
     if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln('<comment>'.sprintf($message, $args).'</comment>');
+            $this->output->writeln('<fg=green>'.sprintf($message, $args).'</>');
         }
     }
 
@@ -178,6 +192,6 @@ class Magazine
      * @param array $args the array of format parameters
      */
     protected function info($message, $args = array()) {
-        $this->output->writeln('<info>'.sprintf($message, $args).'</info>');
+        $this->output->writeln('<fg=white>'.sprintf($message, $args).'</>');
     }
 }
