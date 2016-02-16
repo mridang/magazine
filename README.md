@@ -39,7 +39,7 @@ You can also download the Magazine source and run the `magazine` command directl
 Authors
 -------
 
-Mridang Agarwalla - <mridang.agarwalla@gmail.com> - <https://github.com/mridang> - <http://www.naderman.de><br />
+Mridang Agarwalla
 
 License
 -------
