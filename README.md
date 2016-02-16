@@ -97,7 +97,8 @@ Usage
     "*.lock",
     "*.tar"
   ]
-}```
+}
+```
 
 Authors
 -------
