@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+if (PHP_SAPI !== 'cli') {
+    echo 'Warning: Magazine should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+}
+
+if (!defined('DS')) define('DS','/');
+
+require __DIR__.'/../src/bootstrap.php';
+
+error_reporting(-1);
+if (function_exists('ini_set')) {
+    @ini_set('display_errors', 1);
+}
+
+use Magazine\Command\Params;
+use Symfony\Component\Console\Application;
+$application = new Application();
+$application->add(new Params());
+$application->run();
