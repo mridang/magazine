@@ -62,6 +62,7 @@ class Params extends Command
      * @param array $args the array of format parameters
      */
     private function error(OutputInterface $output, $message, $args = array()) {
+        /** @noinspection HtmlUnknownTag */
         $output->writeln('<error>'.sprintf($message, $args).'</error>');
         exit(0);
     }
