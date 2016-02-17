@@ -97,12 +97,13 @@ class Magazine
             }
         }
 
+        $xml = new \DOMDocument();
+        $xml->preserveWhiteSpace = FALSE;
+        $xml->loadXML($package->getPackageXml());
+        $xml->formatOutput = TRUE;
+        $this->trace(PHP_EOL);
+        file_put_contents($this->temp_dir.'/package.xml', $xml->saveXml());
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $xml = new \DOMDocument();
-            $xml->preserveWhiteSpace = FALSE;
-            $xml->loadXML($package->getPackageXml());
-            $xml->formatOutput = TRUE;
-            $this->trace(PHP_EOL);
             $this->trace($xml->saveXml());
         }
 
