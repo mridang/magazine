@@ -107,10 +107,11 @@ class Magazine
             $this->trace($xml->saveXml());
         }
 
-        $tgz = $json['name']."-".$json['version']['release'].'.tgz';
-        $this->info("Packaging all the contents into archive %s", $tgz);
+        $file = $json['name']."-".$json['version']['release'];
+        $this->info("Packaging all the contents into archive %s.tgz", $file);
         $archiver = new \Mage_Archive_Tar();
-        $archiver->pack($this->temp_dir, $this->base_dir."/".$tgz);
+        $archiver->pack($this->temp_dir, $this->base_dir."/".$file, true);
+        shell_exec('gzip --suffix .tgz '.$this->base_dir.'/'.$file);
     }
 
     private function get_target_name($path)
