@@ -1,4 +1,4 @@
-# Magazine —— Sane Magento Packaging
+# Magazine — Sane Magento Packaging
 
 Magazine helps you automatically package extensions for Magento 1.x in a sane manner. Magazine uses the cannibalised Magento core classes to build you a fully-compliant Magento package in seconds.
 
