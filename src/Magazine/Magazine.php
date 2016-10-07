@@ -21,16 +21,19 @@ class Magazine
     private $temp_dir;
     private $targets;
     private $output;
+    private $package_version;
 
     /**
      * Constructor for initializing the Magazine packager that initializes the
      * base and temporary directories and validates that a file exists.
      *
      * @param $path string the absolute path to the package.json file
+     * @param $version string the version of the package, e.g. 2.9.1
+     * @param OutputInterface $output The output interface for logging messages
      * @param OutputInterface $output The output interface for logging messages
      * @throws \Exception When the package.json file was not found or malformed
      */
-    public function __construct($path, OutputInterface $output)
+    public function __construct($path, $version, OutputInterface $output)
     {
 
         $this->output = $output;
@@ -38,6 +41,7 @@ class Magazine
             throw new \Exception("Missing file or was a directory");
         } else {
             $this->pkg_json = $path;
+            $this->package_version = $version;
             $this->base_dir = dirname(realpath($path));
             $this->temp_dir = self::getTempDir();
             $this->targets = new \Mage_Connect_Package_Target();
@@ -50,6 +54,8 @@ class Magazine
         $package = new \Mage_Connect_Package();
         $string = file_get_contents($this->pkg_json);
         $json = json_decode($string, true);
+        $this->amendDynamicAttributesToJson($json);
+        $this->validateJson($json);
         $package->importDataV1x($json);
         $this->debug("Loading packaging metadata from %s", $this->pkg_json);
 
@@ -210,5 +216,34 @@ class Magazine
     protected function info($message, $args = array()) {
         /** @noinspection HtmlUnknownTag */
         $this->output->writeln('<fg=white>'.sprintf($message, $args));
+    }
+
+
+    /**
+     * Adds attributes given from command line to the json
+     *
+     * @param array $json array of the json in magazine.json
+     */
+    private function amendDynamicAttributesToJson(array &$json) {
+        if (!is_null($this->package_version)) {
+            $json['version'] = array();
+            $json['version']['release'] = $this->package_version;
+        }
+    }
+
+    /**
+     * Validates that json is valid for package.xml
+     *
+     * @throws \Exception if package is not valid
+     * @param array $json array of the json in magazine.json
+     * @return void
+     */
+    private function validateJson(array $json) {
+        if (empty($json['version']) || empty($json['version']['release'])) {
+            throw new \Exception(
+                'Package json is missing attribute version[\'release\'].' .
+                'You must define the version in magazine.json in command line'
+            );
+        }
     }
 }
