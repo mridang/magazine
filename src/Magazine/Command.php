@@ -33,7 +33,7 @@ class Params extends Command
             )
             ->addArgument(
                 'version',
-                InputArgument::REQUIRED,
+                InputArgument::OPTIONAL,
                 'Version number of the package'
             );
     }

@@ -55,6 +55,7 @@ class Magazine
         $string = file_get_contents($this->pkg_json);
         $json = json_decode($string, true);
         $this->amendDynamicAttributesToJson($json);
+        $this->validateJson($json);
         $package->importDataV1x($json);
         $this->debug("Loading packaging metadata from %s", $this->pkg_json);
 
@@ -224,7 +225,25 @@ class Magazine
      * @param array $json array of the json in magazine.json
      */
     private function amendDynamicAttributesToJson(array &$json) {
-        $json['version'] = array();
-        $json['version']['release'] = $this->package_version;
+        if (!is_null($this->package_version)) {
+            $json['version'] = array();
+            $json['version']['release'] = $this->package_version;
+        }
+    }
+
+    /**
+     * Validates that json is valid for package.xml
+     *
+     * @throws \Exception if package is not valid
+     * @param array $json array of the json in magazine.json
+     * @return void
+     */
+    private function validateJson(array $json) {
+        if (empty($json['version']) || empty($json['version']['release'])) {
+            throw new \Exception(
+                'Package json is missing attribute version[\'release\'].' .
+                'You must define the version in magazine.json in command line'
+            );
+        }
     }
 }
