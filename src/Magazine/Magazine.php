@@ -22,19 +22,24 @@ class Magazine
     private $targets;
     private $output;
     private $package_version;
+    private $package_name;
 
     /**
      * Constructor for initializing the Magazine packager that initializes the
      * base and temporary directories and validates that a file exists.
      *
-     * @param $path string the absolute path to the package.json file
-     * @param $version string the version of the package, e.g. 2.9.1
+     * @param string $path the absolute path to the package.json file
+     * @param string $version the version of the package, e.g. 2.9.1
      * @param OutputInterface $output The output interface for logging messages
-     * @param OutputInterface $output The output interface for logging messages
+     * @param string $packageName optional name of the package
      * @throws \Exception When the package.json file was not found or malformed
      */
-    public function __construct($path, $version, OutputInterface $output)
-    {
+    public function __construct(
+        $path,
+        $version,
+        OutputInterface $output,
+        $package_name = null
+    ) {
 
         $this->output = $output;
         if (!file_exists(realpath($path)) && !is_file(realpath($path))) {
@@ -42,6 +47,7 @@ class Magazine
         } else {
             $this->pkg_json = $path;
             $this->package_version = $version;
+            $this->package_name = $package_name;
             $this->base_dir = dirname(realpath($path));
             $this->temp_dir = self::getTempDir();
             $this->targets = new \Mage_Connect_Package_Target();
@@ -228,6 +234,9 @@ class Magazine
         if (!is_null($this->package_version)) {
             $json['version'] = array();
             $json['version']['release'] = $this->package_version;
+        }
+        if (!is_null($this->package_name)) {
+            $json['name'] = $this->package_name;
         }
     }
 

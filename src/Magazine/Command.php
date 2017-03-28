@@ -35,6 +35,11 @@ class Params extends Command
                 'version',
                 InputArgument::OPTIONAL,
                 'Version number of the package'
+            )
+            ->addArgument(
+                'name',
+                InputArgument::OPTIONAL,
+                'The name of the package'
             );
     }
 
@@ -48,13 +53,14 @@ class Params extends Command
     {
         $path = $input->getArgument('path');
         $version = $input->getArgument('version');
+        $package_name = $input->getArgument('name');
         if (!file_exists($path) && !is_file($input->getArgument('path'))) {
             self::error($output, "The specified path is missing or a directory");
         } else {
             if (json_decode(file_get_contents($path)) == null) {
                 self::error($output, "The specified file is not a valid JSON file");
             } else {
-                $packager = new Magazine($path, $version, $output);
+                $packager = new Magazine($path, $version, $output, $package_name);
                 $packager->package();
             }
         }
